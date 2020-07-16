@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import FatText from "../../components/FatText";
 import Loader from "../../components/Loader";
 import UserCard from "../../components/UserCard";
+import SquarePost from "../../components/SquarePost";
 
 const Wrapper = styled.div`
   height: 50vh;
@@ -13,9 +14,15 @@ const Section = styled.div`
   margin-bottom: 50px;
   display: grid;
   grid-gap: 25px;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 160px);
   grid-template-rows: 160px;
   grid-auto-rows: 160px;
+`;
+
+const PostSection = styled(Section)`
+  grid-template-columns: repeat(4, 200px);
+  grid-template-rows: 200px;
+  grid-auto-rows: 200px;
 `;
 
 const SearchPresenter = ({ searchTerm, loading, data }) => {
@@ -34,7 +41,7 @@ const SearchPresenter = ({ searchTerm, loading, data }) => {
   } else if (data && data.searchUser && data.searchPost) {
     return (
       <Wrapper>
-        <Section>
+        <PostSection>
           {data.searchUser.length === 0 ? (
             <FatText text="No Users Found" />
           ) : (
@@ -45,15 +52,23 @@ const SearchPresenter = ({ searchTerm, loading, data }) => {
                 isFollowing={user.isFollowing}
                 url={user.avatar}
                 isSelf={user.isSelf}
+                id={user.id}
               />
             ))
           )}
-        </Section>
+        </PostSection>
         <Section>
           {data.searchPost.length === 0 ? (
             <FatText text="No Posts Found" />
           ) : (
-            data.searchPost.map((post) => null)
+            data.searchPost.map((post) => (
+              <SquarePost
+                key={post.id}
+                likeCount={post.likeCount}
+                commentCount={post.commentCount}
+                file={post.files[0]}
+              />
+            ))
           )}
         </Section>
       </Wrapper>
