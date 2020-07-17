@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 `;
 
 const Section = styled.div`
+  margin-top: 10px;
   margin-bottom: 50px;
   display: grid;
   grid-gap: 25px;
@@ -21,6 +22,7 @@ const Section = styled.div`
 `;
 
 const PostSection = styled(Section)`
+  margin-top: 10px;
   grid-template-columns: repeat(4, 200px);
   grid-template-rows: 200px;
   grid-auto-rows: 200px;
@@ -51,38 +53,50 @@ const SearchPresenter = ({
       <>
         {modal && id && <PostModal id={id} handleModal={handleModal} />}
         <Wrapper>
-          <PostSection>
-            {data.searchUser.length === 0 ? (
+          {data.searchUser.length === 0 ? (
+            <>
               <FatText text="No Users Found" />
-            ) : (
-              data.searchUser.map((user) => (
-                <UserCard
-                  key={user.id}
-                  username={user.name}
-                  isFollowing={user.isFollowing}
-                  url={user.avatar}
-                  isSelf={user.isSelf}
-                  id={user.id}
-                />
-              ))
-            )}
-          </PostSection>
-          <Section>
-            {data.searchPost.length === 0 ? (
+              <PostSection />
+            </>
+          ) : (
+            <>
+              <FatText text="Users Found" />
+              <PostSection>
+                {data.searchUser.map((user) => (
+                  <UserCard
+                    key={user.id}
+                    username={user.name}
+                    isFollowing={user.isFollowing}
+                    url={user.avatar}
+                    isSelf={user.isSelf}
+                    id={user.id}
+                  />
+                ))}
+              </PostSection>
+            </>
+          )}
+          {data.searchPost.length === 0 ? (
+            <>
               <FatText text="No Posts Found" />
-            ) : (
-              data.searchPost.map((post) => (
-                <SquarePost
-                  key={post.id}
-                  likeCount={post.likeCount}
-                  commentCount={post.commentCount}
-                  file={post.files[0]}
-                  handleModal={handleModal}
-                  id={post.id}
-                />
-              ))
-            )}
-          </Section>
+              <Section />
+            </>
+          ) : (
+            <>
+              <FatText text="Posts Found" />
+              <Section>
+                {data.searchPost.map((post) => (
+                  <SquarePost
+                    key={post.id}
+                    likeCount={post.likeCount}
+                    commentCount={post.commentCount}
+                    file={post.files[0]}
+                    handleModal={handleModal}
+                    id={post.id}
+                  />
+                ))}
+              </Section>
+            </>
+          )}
         </Wrapper>
       </>
     );

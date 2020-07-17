@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import TextareaAutosize from "react-autosize-textarea";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
 import { HeartFull, HeartEmpty, Comment as CommentIcon } from "../Icons";
 import Loader from "../Loader";
+import { getFormatDate } from "../../SharedFuncs";
 
 const Post = styled.div`
   ${(props) => props.theme.whiteBox};
@@ -12,6 +14,9 @@ const Post = styled.div`
   max-width: 600px;
   user-select: none;
   margin-bottom: 25px;
+  a {
+    color: inherit;
+  }
 `;
 
 const Header = styled.header`
@@ -92,6 +97,11 @@ const Textarea = styled(TextareaAutosize)`
 
 const Comments = styled.ul`
   margin-top: 10px;
+  max-height: 200px;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 0 !important;
+  }
 `;
 
 const Comment = styled.li`
@@ -100,6 +110,10 @@ const Comment = styled.li`
     margin-right: 5px;
   }
   line-height: 1.2;
+`;
+
+const Caption = styled.div`
+  margin: 10px 0px;
 `;
 
 export default ({
@@ -115,6 +129,7 @@ export default ({
   onKeyPress,
   comments,
   selfComments,
+  caption,
   tLoading,
   aLoading,
 }) => (
@@ -123,7 +138,9 @@ export default ({
     <Header>
       <Avatar size="sm" url={avatar} />
       <UserColumn>
-        <FatText text={name} />
+        <Link to={`/${name}`}>
+          <FatText text={name} />
+        </Link>
         <Location>{location}</Location>
       </UserColumn>
     </Header>
@@ -143,6 +160,9 @@ export default ({
         </Button>
       </Buttons>
       <FatText text={`${likeCount} likes`} />
+      <Caption>
+        <FatText text={name} /> {caption}
+      </Caption>
       {comments && (
         <Comments>
           {comments.map((comment) => (
@@ -159,7 +179,7 @@ export default ({
           ))}
         </Comments>
       )}
-      <Timestamp>{createdAt}</Timestamp>
+      <Timestamp>{getFormatDate(new Date(createdAt))}</Timestamp>
       <Textarea
         placeholder={"Add a comment..."}
         value={newComment.value}

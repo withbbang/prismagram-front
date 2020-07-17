@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { SEE_FULL_POST, TOGGLE_LIKE, ADD_COMMENT } from "./PostModalQueries";
+import { SEE_FULL_POST } from "./PostModalQueries";
+import { TOGGLE_LIKE, ADD_COMMENT } from "../../SharedQueries";
 import useInput from "../../hooks/useInput";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import { toast } from "react-toastify";
 import PostModalPresenter from "./PostModalPresenter";
 
 const PostModalContainer = ({ id, handleModal }) => {
-  const [isLikedS, setIsLiked] = useState(false);
-  const [likeCountS, setLikeCount] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
   const [current, setCurrent] = useState(0);
   const [selfComments, setSelfComments] = useState([]);
   const comment = useInput("");
@@ -25,7 +26,6 @@ const PostModalContainer = ({ id, handleModal }) => {
 
   useEffect(() => {
     if (data !== undefined) {
-      console.log("data : ", data);
       setIsLiked(data.seeFullPost.isLiked);
       setLikeCount(data.seeFullPost.likeCount);
     }
@@ -48,12 +48,12 @@ const PostModalContainer = ({ id, handleModal }) => {
   };
 
   const toggleLike = async () => {
-    if (isLikedS) {
+    if (isLiked) {
       setIsLiked(false);
-      setLikeCount(likeCountS - 1);
+      setLikeCount(likeCount - 1);
     } else {
       setIsLiked(true);
-      setLikeCount(likeCountS + 1);
+      setLikeCount(likeCount + 1);
     }
 
     try {
@@ -88,8 +88,8 @@ const PostModalContainer = ({ id, handleModal }) => {
       data={data}
       handleModal={handleModal}
       current={current}
-      isLiked={isLikedS}
-      likeCount={likeCountS}
+      isLiked={isLiked}
+      likeCount={likeCount}
       toggleLike={toggleLike}
       newComment={comment}
       selfComments={selfComments}
