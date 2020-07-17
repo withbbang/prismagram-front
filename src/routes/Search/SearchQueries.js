@@ -5,6 +5,7 @@ export const SEARCH = gql`
     searchPost(term: $term) {
       id
       files {
+        id
         url
       }
       likeCount

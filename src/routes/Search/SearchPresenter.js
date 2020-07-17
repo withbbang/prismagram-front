@@ -5,6 +5,7 @@ import FatText from "../../components/FatText";
 import Loader from "../../components/Loader";
 import UserCard from "../../components/UserCard";
 import SquarePost from "../../components/SquarePost";
+import PostModal from "../../components/PostModal";
 
 const Wrapper = styled.div`
   height: 50vh;
@@ -25,7 +26,14 @@ const PostSection = styled(Section)`
   grid-auto-rows: 200px;
 `;
 
-const SearchPresenter = ({ searchTerm, loading, data }) => {
+const SearchPresenter = ({
+  searchTerm,
+  loading,
+  data,
+  modal,
+  handleModal,
+  id,
+}) => {
   if (searchTerm === undefined) {
     return (
       <Wrapper>
@@ -40,38 +48,43 @@ const SearchPresenter = ({ searchTerm, loading, data }) => {
     );
   } else if (data && data.searchUser && data.searchPost) {
     return (
-      <Wrapper>
-        <PostSection>
-          {data.searchUser.length === 0 ? (
-            <FatText text="No Users Found" />
-          ) : (
-            data.searchUser.map((user) => (
-              <UserCard
-                key={user.id}
-                username={user.name}
-                isFollowing={user.isFollowing}
-                url={user.avatar}
-                isSelf={user.isSelf}
-                id={user.id}
-              />
-            ))
-          )}
-        </PostSection>
-        <Section>
-          {data.searchPost.length === 0 ? (
-            <FatText text="No Posts Found" />
-          ) : (
-            data.searchPost.map((post) => (
-              <SquarePost
-                key={post.id}
-                likeCount={post.likeCount}
-                commentCount={post.commentCount}
-                file={post.files[0]}
-              />
-            ))
-          )}
-        </Section>
-      </Wrapper>
+      <>
+        {modal && id && <PostModal id={id} handleModal={handleModal} />}
+        <Wrapper>
+          <PostSection>
+            {data.searchUser.length === 0 ? (
+              <FatText text="No Users Found" />
+            ) : (
+              data.searchUser.map((user) => (
+                <UserCard
+                  key={user.id}
+                  username={user.name}
+                  isFollowing={user.isFollowing}
+                  url={user.avatar}
+                  isSelf={user.isSelf}
+                  id={user.id}
+                />
+              ))
+            )}
+          </PostSection>
+          <Section>
+            {data.searchPost.length === 0 ? (
+              <FatText text="No Posts Found" />
+            ) : (
+              data.searchPost.map((post) => (
+                <SquarePost
+                  key={post.id}
+                  likeCount={post.likeCount}
+                  commentCount={post.commentCount}
+                  file={post.files[0]}
+                  handleModal={handleModal}
+                  id={post.id}
+                />
+              ))
+            )}
+          </Section>
+        </Wrapper>
+      </>
     );
   }
 };
@@ -79,6 +92,8 @@ const SearchPresenter = ({ searchTerm, loading, data }) => {
 SearchPresenter.propTypes = {
   searchTerm: PropTypes.string,
   loading: PropTypes.bool,
+  modal: PropTypes.bool.isRequired,
+  handleModal: PropTypes.func.isRequired,
 };
 
 export default SearchPresenter;

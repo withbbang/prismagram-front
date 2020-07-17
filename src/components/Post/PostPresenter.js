@@ -4,6 +4,7 @@ import TextareaAutosize from "react-autosize-textarea";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
 import { HeartFull, HeartEmpty, Comment as CommentIcon } from "../Icons";
+import Loader from "../Loader";
 
 const Post = styled.div`
   ${(props) => props.theme.whiteBox};
@@ -38,13 +39,13 @@ const Files = styled.div`
   flex-shrink: 0;
 `;
 
-const File = styled.img`
+const File = styled.div`
   max-width: 100%;
   width: 100%;
   height: 600px;
   position: absolute;
   top: 0;
-  background-image: url(${(props) => props.src}});
+  background-image: url(${(props) => props.url});
   background-size: cover;
   background-position: center;
   opacity: ${(props) => (props.showing ? 1 : 0)};
@@ -98,6 +99,7 @@ const Comment = styled.li`
   span {
     margin-right: 5px;
   }
+  line-height: 1.2;
 `;
 
 export default ({
@@ -113,8 +115,11 @@ export default ({
   onKeyPress,
   comments,
   selfComments,
+  tLoading,
+  aLoading,
 }) => (
   <Post>
+    {(tLoading || aLoading) && <Loader />}
     <Header>
       <Avatar size="sm" url={avatar} />
       <UserColumn>
@@ -125,7 +130,7 @@ export default ({
     <Files>
       {files &&
         files.map((file, index) => (
-          <File key={file.id} src={file.url} showing={index === currentItem} />
+          <File key={file.id} url={file.url} showing={index === currentItem} />
         ))}
     </Files>
     <Meta>

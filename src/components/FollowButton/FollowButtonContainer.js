@@ -6,8 +6,13 @@ import FollowButtonPresenter from "./FollowButtonPresenter";
 
 const FollowButtonContainer = ({ isFollowing, id }) => {
   const [isFollowingS, setIsFollowing] = useState(isFollowing);
-  const [followMutation] = useMutation(FOLLOW, { variables: { id } });
-  const [unfollowMutation] = useMutation(UNFOLLOW, { variables: { id } });
+  const [followMutation, { loading: followLoading }] = useMutation(FOLLOW, {
+    variables: { id },
+  });
+  const [unfollowMutation, { loading: unfollowLoading }] = useMutation(
+    UNFOLLOW,
+    { variables: { id } }
+  );
 
   const onClick = () => {
     if (isFollowingS === true) {
@@ -18,7 +23,13 @@ const FollowButtonContainer = ({ isFollowing, id }) => {
       followMutation();
     }
   };
-  return <FollowButtonPresenter onClick={onClick} isFollowing={isFollowingS} />;
+  return (
+    <FollowButtonPresenter
+      onClick={onClick}
+      isFollowing={isFollowingS}
+      loading={[followLoading, unfollowLoading]}
+    />
+  );
 };
 
 FollowButtonContainer.propTypes = {

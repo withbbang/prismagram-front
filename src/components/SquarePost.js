@@ -42,8 +42,8 @@ const NumberText = styled.span`
   font-size: 16px;
 `;
 
-const SquarePost = ({ likeCount, commentCount, file }) => (
-  <Container bg={file.url}>
+const SquarePost = ({ likeCount, commentCount, file, id, handleModal }) => (
+  <Container bg={file.url} onClick={() => handleModal(id)}>
     <Overlay>
       <Number>
         <HeartFull />
@@ -61,6 +61,8 @@ SquarePost.propTypes = {
   likeCount: PropTypes.number.isRequired,
   commentCount: PropTypes.number.isRequired,
   file: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
+  handleModal: PropTypes.func.isRequired,
 };
 
 export default SquarePost;

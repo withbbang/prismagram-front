@@ -22,10 +22,10 @@ const PostContainer = ({
   const [currentItem, setCurrentItem] = useState(0);
   const [selfComments, setSelfComments] = useState([]);
   const comment = useInput("");
-  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
+  const [toggleLikeMutation, { loading: tLoading }] = useMutation(TOGGLE_LIKE, {
     variables: { postId: id },
   });
-  const [addCommentMutation] = useMutation(ADD_COMMENT, {
+  const [addCommentMutation, { loading: aLoading }] = useMutation(ADD_COMMENT, {
     variables: { postId: id, text: comment.value },
   });
   const slide = () => {
@@ -87,12 +87,12 @@ const PostContainer = ({
       comments={comments}
       createdAt={createdAt}
       newComment={comment}
-      setIsLiked={setIsLiked}
-      setLikeCount={setLikeCount}
       currentItem={currentItem}
       toggleLike={toggleLike}
       onKeyPress={onKeyPress}
       selfComments={selfComments}
+      tLoading={tLoading}
+      aLoading={aLoading}
     />
   );
 };
