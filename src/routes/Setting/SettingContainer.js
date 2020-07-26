@@ -45,6 +45,7 @@ export default () => {
   };
 
   const onChange = async (e) => {
+    setModal(false);
     const fileUploaded = e.target.files[0];
     const formData = new FormData();
     formData.append("file", fileUploaded);
@@ -56,17 +57,20 @@ export default () => {
           "Content-type": "multipart/form-data",
         },
       });
+      await axios.post("http://localhost:4000/api/delete", {
+        Key: data.me.avatarKey,
+      });
       await editPhotoMutation({
         variables: { file: location, key },
       });
       await refetch();
-      setModal(false);
     } catch (e) {
       console.log("Error : ", e);
     }
   };
 
   const onDelete = async () => {
+    setModal(false);
     await axios.post("http://localhost:4000/api/delete", {
       Key: data.me.avatarKey,
     });
@@ -78,7 +82,6 @@ export default () => {
       },
     });
     await refetch();
-    setModal(false);
   };
 
   const onSubmit = async (e) => {
