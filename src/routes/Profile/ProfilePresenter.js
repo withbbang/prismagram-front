@@ -6,7 +6,6 @@ import Avatar from "../../components/Avatar";
 import FatText from "../../components/FatText";
 import FollowButton from "../../components/FollowButton";
 import SquarePost from "../../components/SquarePost";
-import Button from "../../components/Button";
 import PostModal from "../../components/PostModal";
 
 const Wrapper = styled.div`
@@ -61,7 +60,7 @@ const Posts = styled.div`
   grid-auto-rows: 200px;
 `;
 
-export default ({ loading, data, logOut, modal, handleModal, postId }) => {
+export default ({ loading, data, modal, handleModal, postId }) => {
   if (loading === true) {
     return (
       <Wrapper>
@@ -86,7 +85,7 @@ export default ({ loading, data, logOut, modal, handleModal, postId }) => {
     } = data;
     return (
       <>
-        {modal && id && <PostModal id={postId} handleModal={handleModal} />}
+        {modal && postId && <PostModal id={postId} handleModal={handleModal} />}
         <Wrapper>
           <Helmet>
             <title>{name} | Prismagram</title>
@@ -98,11 +97,7 @@ export default ({ loading, data, logOut, modal, handleModal, postId }) => {
             <HeaderColumn>
               <UsernameRow>
                 <Username>{name}</Username>{" "}
-                {isSelf ? (
-                  <Button onClick={logOut} text="Log Out" />
-                ) : (
-                  <FollowButton isFollowing={isFollowing} id={id} />
-                )}
+                {!isSelf && <FollowButton isFollowing={isFollowing} id={id} />}
               </UsernameRow>
               <Counts>
                 <Count>

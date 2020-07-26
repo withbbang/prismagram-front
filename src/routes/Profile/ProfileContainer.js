@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { gql } from "apollo-boost";
 import { withRouter } from "react-router-dom";
-import { useQuery, useMutation } from "react-apollo-hooks";
+import { useQuery } from "react-apollo-hooks";
 import ProfilePresenter from "./ProfilePresenter";
 
 const GET_USER = gql`
@@ -29,12 +29,6 @@ const GET_USER = gql`
   }
 `;
 
-export const LOG_OUT = gql`
-  mutation logUserOut {
-    logUserOut @client
-  }
-`;
-
 export default withRouter(
   ({
     match: {
@@ -44,7 +38,6 @@ export default withRouter(
     const [modal, setModal] = useState(false);
     const [id, setId] = useState(0);
     const { data, loading } = useQuery(GET_USER, { variables: { name } });
-    const [logOut] = useMutation(LOG_OUT);
 
     const handleModal = (id) => {
       if (modal) {
@@ -59,7 +52,6 @@ export default withRouter(
     return (
       <ProfilePresenter
         loading={loading}
-        logOut={logOut}
         data={data}
         modal={modal}
         handleModal={handleModal}

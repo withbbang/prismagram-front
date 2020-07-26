@@ -66,9 +66,11 @@ export default () => {
       ) {
         try {
           const {
-            data: { createAccount },
+            data: {
+              createAccount: { id },
+            },
           } = await createAccountMutation();
-          if (!createAccount) {
+          if (!id) {
             toast.error("Can't create account");
           } else {
             toast.success("Account created! Log In now");

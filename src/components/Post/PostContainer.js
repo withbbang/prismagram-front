@@ -101,7 +101,7 @@ PostContainer.propTypes = {
   id: PropTypes.string.isRequired,
   user: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    avatar: PropTypes.string,
+    avatar: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
   files: PropTypes.arrayOf(

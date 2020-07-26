@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
+import { gql } from "apollo-boost";
 import styled from "styled-components";
 import { Link, withRouter } from "react-router-dom";
 import { ME } from "../SharedQueries";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery, useMutation } from "react-apollo-hooks";
 import Input from "./Input";
 import useInput from "../hooks/useInput";
-import { Compass, HeartEmpty, User, Logo } from "./Icons";
+import {
+  Compass,
+  HeartEmpty,
+  User,
+  Logo,
+  Setting,
+  Profile,
+  Message,
+} from "./Icons";
+import FatText from "./FatText";
 
 const Header = styled.header`
   width: 100%;
@@ -32,15 +42,8 @@ const HeaderWrapper = styled.div`
 
 const HeaderColumn = styled.div`
   width: 33%;
+  display: flex;
   text-align: center;
-  &:first-child {
-    margin-right: auto;
-    text-align: left;
-  }
-  &:last-child {
-    margin-left: auto;
-    text-align: right;
-  }
 `;
 
 const SearchInput = styled(Input)`
@@ -57,19 +60,76 @@ const SearchInput = styled(Input)`
   }
 `;
 
-const HeaderLink = styled(Link)`
+const HeaderBtn = styled.div`
+  cursor: pointer;
+  position: relative;
   &:not(:last-child) {
     margin-right: 30px;
+  }
+  &:first-child {
+    margin-left: auto;
+  }
+`;
+
+const DropDown = styled.ul`
+  position: absolute;
+  top: 100%;
+  right: -340%;
+  cursor: pointer;
+  width: 200px;
+  max-width: 200px;
+  background-color: #fff;
+  box-sizing: border-box;
+  box-shadow: 0 0 5px 1px rgba(var(--jb7, 0, 0, 0), 0.0975);
+  z-index: 5;
+`;
+
+const List = styled.li`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  &:hover {
+    background-color: rgb(240, 240, 240);
+  }
+`;
+
+const LFatText = styled(FatText)`
+  margin-left: 10px;
+`;
+
+const LLink = styled(Link)`
+  color: inherit;
+`;
+
+const LogOut = styled(List)`
+  box-sizing: border-box;
+  border-top: 1px solid rgba(var(--b38, 219, 219, 219), 1);
+`;
+
+const Background = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+`;
+
+export const LOG_OUT = gql`
+  mutation logUserOut {
+    logUserOut @client
   }
 `;
 
 export default withRouter(({ history }) => {
+  const [drop, setDrop] = useState("");
   const search = useInput("");
   const { data } = useQuery(ME);
   const onSearchSubmit = (e) => {
     e.preventDefault();
     history.push(`/search?term=${search.value}`);
   };
+  const [logOut] = useMutation(LOG_OUT);
 
   return (
     <Header>
@@ -89,20 +149,65 @@ export default withRouter(({ history }) => {
           </form>
         </HeaderColumn>
         <HeaderColumn>
-          <HeaderLink to="/explore">
-            <Compass />
-          </HeaderLink>
-          <HeaderLink to="/notifications">
+          <HeaderBtn>
+            <Link to="/message">
+              <Message />
+            </Link>
+          </HeaderBtn>
+          <HeaderBtn>
+            <Link to="/explore">
+              <Compass />
+            </Link>
+          </HeaderBtn>
+          <HeaderBtn
+            onClick={
+              drop === "empty" ? () => setDrop("") : () => setDrop("empty")
+            }
+          >
             <HeartEmpty />
-          </HeaderLink>
+            {drop === "empty" && (
+              <>
+                <Background onClick={() => setDrop("")} />
+                <DropDown></DropDown>
+              </>
+            )}
+          </HeaderBtn>
           {data && data.me ? (
-            <HeaderLink to={data.me.name}>
+            <HeaderBtn
+              onClick={
+                drop === "user" ? () => setDrop("") : () => setDrop("user")
+              }
+            >
               <User />
-            </HeaderLink>
+              {drop === "user" && (
+                <>
+                  <Background onClick={() => setDrop("")} />
+                  <DropDown>
+                    <LLink to={data.me.name}>
+                      <List>
+                        <Profile />
+                        <LFatText text="Profile" />
+                      </List>
+                    </LLink>
+                    <LLink to="setting">
+                      <List>
+                        <Setting />
+                        <LFatText text="Setting" />
+                      </List>
+                    </LLink>
+                    <LogOut onClick={logOut}>
+                      <FatText text="Log Out" />
+                    </LogOut>
+                  </DropDown>
+                </>
+              )}
+            </HeaderBtn>
           ) : (
-            <HeaderLink to="/#">
-              <User />
-            </HeaderLink>
+            <HeaderBtn>
+              <Link to="/#">
+                <User />
+              </Link>
+            </HeaderBtn>
           )}
         </HeaderColumn>
       </HeaderWrapper>
