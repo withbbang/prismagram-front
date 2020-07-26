@@ -12,6 +12,5 @@ import {
 export default withRouter(() => {
   const { rooms, rsLoading } = useQuery(SEE_ROOMS);
 
-  console.log("data : ", rooms);
   return <MessagePresenter />;
 });

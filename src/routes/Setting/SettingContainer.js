@@ -46,7 +46,6 @@ export default () => {
 
   const onChange = async (e) => {
     const fileUploaded = e.target.files[0];
-    console.log("file : ", fileUploaded);
     const formData = new FormData();
     formData.append("file", fileUploaded);
     try {
