@@ -88,7 +88,7 @@ export default ({ loading, data, modal, handleModal, postId }) => {
         {modal && postId && <PostModal id={postId} handleModal={handleModal} />}
         <Wrapper>
           <Helmet>
-            <title>{name} | Prismagram</title>
+            <title>{name} | Youngstagram</title>
           </Helmet>
           <Header>
             <HeaderColumn>
