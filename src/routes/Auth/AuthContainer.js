@@ -17,24 +17,30 @@ export default () => {
   const lastName = useInput("");
   const secret = useInput("");
   const email = useInput("");
-  const [requestSecretMutation] = useMutation(LOG_IN, {
+  const [requestSecretMutation, { loading: rLoading }] = useMutation(LOG_IN, {
     variables: { email: email.value },
   });
-  const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
-    variables: {
-      name: username.value,
-      email: email.value,
-      firstName: firstName.value,
-      lastName: lastName.value,
-    },
-  });
-  const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
-    variables: {
-      email: email.value,
-      secret: secret.value,
-    },
-  });
-  const [localLogInMutation] = useMutation(LOCAL_LOG_IN);
+  const [createAccountMutation, { loading: aLoading }] = useMutation(
+    CREATE_ACCOUNT,
+    {
+      variables: {
+        name: username.value,
+        email: email.value,
+        firstName: firstName.value,
+        lastName: lastName.value,
+      },
+    }
+  );
+  const [confirmSecretMutation, { loading: sLoading }] = useMutation(
+    CONFIRM_SECRET,
+    {
+      variables: {
+        email: email.value,
+        secret: secret.value,
+      },
+    }
+  );
+  const [localLogInMutation, { loading: iLoading }] = useMutation(LOCAL_LOG_IN);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -110,6 +116,10 @@ export default () => {
       secret={secret}
       email={email}
       onSubmit={onSubmit}
+      rLoading={rLoading}
+      aLoading={aLoading}
+      sLoading={sLoading}
+      iLoading={iLoading}
     />
   );
 };

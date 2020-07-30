@@ -129,7 +129,7 @@ export default withRouter(({ history }) => {
     e.preventDefault();
     history.push(`/search?term=${search.value}`);
   };
-  const [logOut] = useMutation(LOG_OUT);
+  const [logOut, { loading: oLoading }] = useMutation(LOG_OUT);
 
   return (
     <Header>

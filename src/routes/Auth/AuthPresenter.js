@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import Loader from "../Loader";
 
 const Wrapper = styled.div`
   min-height: 80vh;
@@ -56,62 +57,69 @@ export default ({
   email,
   setAction,
   onSubmit,
+  rLoading,
+  aLoading,
+  sLoading,
+  iLoading,
 }) => {
   return (
-    <Wrapper>
-      <Form>
-        {action === "logIn" && (
-          <>
-            <Helmet>
-              <title>Log In | Youngstagram</title>
-            </Helmet>
-            <form onSubmit={onSubmit}>
-              <Input placeholder={"Email"} {...email} type="email" />
-              <Button text={"Log In"} />
-            </form>
-          </>
-        )}
-        {action === "signUp" && (
-          <>
-            <Helmet>
-              <title>Sign Up | Youngstagram</title>
-            </Helmet>
-            <form onSubmit={onSubmit}>
-              <Input placeholder={"Firstname"} {...firstName} />
-              <Input placeholder={"Lastname"} {...lastName} />
-              <Input placeholder={"Email"} {...email} type="email" />
-              <Input placeholder={"Username"} {...username} />
-              <Button text={"Sign Up"} />
-            </form>
-          </>
-        )}
-        {action === "confirm" && (
-          <>
-            <Helmet>
-              <title>Confrim Secret | Youngstagram</title>
-            </Helmet>
-            <form onSubmit={onSubmit}>
-              <Input placeholder="Paste your secret" required {...secret} />
-              <Button text="Confirm" />
-            </form>
-          </>
-        )}
-      </Form>
-      {action !== "confirm" && (
-        <StateChanger>
-          {action === "logIn" ? (
+    <>
+      {(rLoading || aLoading || sLoading || iLoading) && <Loader />}
+      <Wrapper>
+        <Form>
+          {action === "logIn" && (
             <>
-              Don't have an account?{" "}
-              <Link onClick={() => setAction("signUp")}>Sign up</Link>
-            </>
-          ) : (
-            <>
-              Have an account?{" "}
-              <Link onClick={() => setAction("logIn")}>Log in</Link>
+              <Helmet>
+                <title>Log In | Youngstagram</title>
+              </Helmet>
+              <form onSubmit={onSubmit}>
+                <Input placeholder={"Email"} {...email} type="email" />
+                <Button text={"Log In"} />
+              </form>
             </>
           )}
-        </StateChanger>
-      )}
-    </Wrapper>
+          {action === "signUp" && (
+            <>
+              <Helmet>
+                <title>Sign Up | Youngstagram</title>
+              </Helmet>
+              <form onSubmit={onSubmit}>
+                <Input placeholder={"Firstname"} {...firstName} />
+                <Input placeholder={"Lastname"} {...lastName} />
+                <Input placeholder={"Email"} {...email} type="email" />
+                <Input placeholder={"Username"} {...username} />
+                <Button text={"Sign Up"} />
+              </form>
+            </>
+          )}
+          {action === "confirm" && (
+            <>
+              <Helmet>
+                <title>Confrim Secret | Youngstagram</title>
+              </Helmet>
+              <form onSubmit={onSubmit}>
+                <Input placeholder="Paste your secret" required {...secret} />
+                <Button text="Confirm" />
+              </form>
+            </>
+          )}
+        </Form>
+        {action !== "confirm" && (
+          <StateChanger>
+            {action === "logIn" ? (
+              <>
+                Don't have an account?{" "}
+                <Link onClick={() => setAction("signUp")}>Sign up</Link>
+              </>
+            ) : (
+              <>
+                Have an account?{" "}
+                <Link onClick={() => setAction("logIn")}>Log in</Link>
+              </>
+            )}
+          </StateChanger>
+        )}
+      </Wrapper>
+    </>
   );
 };
