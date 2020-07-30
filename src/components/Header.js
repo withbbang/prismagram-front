@@ -16,6 +16,7 @@ import {
   Message,
 } from "./Icons";
 import FatText from "./FatText";
+import Loader from "./Loader";
 
 const Header = styled.header`
   width: 100%;
@@ -132,85 +133,88 @@ export default withRouter(({ history }) => {
   const [logOut, { loading: oLoading }] = useMutation(LOG_OUT);
 
   return (
-    <Header>
-      <HeaderWrapper>
-        <HeaderColumn>
-          <Link to="/">
-            <Logo />
-          </Link>
-        </HeaderColumn>
-        <HeaderColumn>
-          <form onSubmit={onSearchSubmit}>
-            <SearchInput
-              value={search.value}
-              onChange={search.onChange}
-              placeholder="Search"
-            />
-          </form>
-        </HeaderColumn>
-        <HeaderColumn>
-          <HeaderBtn>
-            <Link to="/message">
-              <Message />
+    <>
+      {oLoading && <Loader />}
+      <Header>
+        <HeaderWrapper>
+          <HeaderColumn>
+            <Link to="/">
+              <Logo />
             </Link>
-          </HeaderBtn>
-          <HeaderBtn>
-            <Link to="/explore">
-              <Compass />
-            </Link>
-          </HeaderBtn>
-          <HeaderBtn
-            onClick={
-              drop === "empty" ? () => setDrop("") : () => setDrop("empty")
-            }
-          >
-            <HeartEmpty />
-            {drop === "empty" && (
-              <>
-                <Background onClick={() => setDrop("")} />
-                <DropDown></DropDown>
-              </>
-            )}
-          </HeaderBtn>
-          {data && data.me ? (
+          </HeaderColumn>
+          <HeaderColumn>
+            <form onSubmit={onSearchSubmit}>
+              <SearchInput
+                value={search.value}
+                onChange={search.onChange}
+                placeholder="Search"
+              />
+            </form>
+          </HeaderColumn>
+          <HeaderColumn>
+            <HeaderBtn>
+              <Link to="/message">
+                <Message />
+              </Link>
+            </HeaderBtn>
+            <HeaderBtn>
+              <Link to="/explore">
+                <Compass />
+              </Link>
+            </HeaderBtn>
             <HeaderBtn
               onClick={
-                drop === "user" ? () => setDrop("") : () => setDrop("user")
+                drop === "empty" ? () => setDrop("") : () => setDrop("empty")
               }
             >
-              <User />
-              {drop === "user" && (
+              <HeartEmpty />
+              {drop === "empty" && (
                 <>
                   <Background onClick={() => setDrop("")} />
-                  <DropDown>
-                    <LLink to={data.me.name}>
-                      <List>
-                        <Profile />
-                        <LFatText text="Profile" />
-                      </List>
-                    </LLink>
-                    <LLink to="setting">
-                      <List>
-                        <Setting />
-                        <LFatText text="Setting" />
-                      </List>
-                    </LLink>
-                    <LogOut onClick={logOut}>
-                      <FatText text="Log Out" />
-                    </LogOut>
-                  </DropDown>
+                  <DropDown></DropDown>
                 </>
               )}
             </HeaderBtn>
-          ) : (
-            <HeaderBtn>
-              <Link to="/#">
+            {data && data.me ? (
+              <HeaderBtn
+                onClick={
+                  drop === "user" ? () => setDrop("") : () => setDrop("user")
+                }
+              >
                 <User />
-              </Link>
-            </HeaderBtn>
-          )}
-        </HeaderColumn>
-      </HeaderWrapper>
-    </Header>
+                {drop === "user" && (
+                  <>
+                    <Background onClick={() => setDrop("")} />
+                    <DropDown>
+                      <LLink to={data.me.name}>
+                        <List>
+                          <Profile />
+                          <LFatText text="Profile" />
+                        </List>
+                      </LLink>
+                      <LLink to="setting">
+                        <List>
+                          <Setting />
+                          <LFatText text="Setting" />
+                        </List>
+                      </LLink>
+                      <LogOut onClick={logOut}>
+                        <FatText text="Log Out" />
+                      </LogOut>
+                    </DropDown>
+                  </>
+                )}
+              </HeaderBtn>
+            ) : (
+              <HeaderBtn>
+                <Link to="/#">
+                  <User />
+                </Link>
+              </HeaderBtn>
+            )}
+          </HeaderColumn>
+        </HeaderWrapper>
+      </Header>
+    </>
   );
 });
