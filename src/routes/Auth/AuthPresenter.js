@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import Loader from "../Loader";
+import Loader from "../../components/Loader";
 
 const Wrapper = styled.div`
   min-height: 80vh;
