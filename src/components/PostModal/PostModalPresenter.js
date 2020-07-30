@@ -230,6 +230,15 @@ export default ({
               )}
             </Profile>
             <CommentsBox>
+              <CommentBox>
+                <Avatar url={data.me.avatar} size={"sm"} />
+                <Comment>
+                  <ELink to={`/${data.me.name}`}>
+                    <FatText text={data.me.name} />
+                  </ELink>
+                  <Com>{data.seeFullPost.caption}</Com>
+                </Comment>
+              </CommentBox>
               {data.seeFullPost.comments.map((comment) => (
                 <CommentBox key={comment.id}>
                   <Avatar url={comment.user.avatar} size={"sm"} />
