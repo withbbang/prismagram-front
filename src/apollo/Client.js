@@ -2,7 +2,7 @@ import ApolloClient from "apollo-boost";
 import { defaults, resolvers } from "./LocalState";
 
 export default new ApolloClient({
-  uri: "https://e634c8ea4e42.ngrok.io",
+  uri: "https://4f13fb3fbe6a.ngrok.io",
   // uri:
   //   process.env.NODE_ENV === "development"
   //     ? "http://localhost:4000"
