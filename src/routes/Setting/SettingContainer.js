@@ -52,12 +52,16 @@ export default () => {
     try {
       const {
         data: { location, key },
-      } = await axios.post("http://localhost:4000/api/upload/", formData, {
-        headers: {
-          "Content-type": "multipart/form-data",
-        },
-      });
-      await axios.post("http://localhost:4000/api/delete", {
+      } = await axios.post(
+        "https://4f13fb3fbe6a.ngrok.io/api/upload/",
+        formData,
+        {
+          headers: {
+            "Content-type": "multipart/form-data",
+          },
+        }
+      );
+      await axios.post("https://4f13fb3fbe6a.ngrok.io/api/delete", {
         Key: data.me.avatarKey,
       });
       await editPhotoMutation({
@@ -71,7 +75,7 @@ export default () => {
 
   const onDelete = async () => {
     setModal(false);
-    await axios.post("http://localhost:4000/api/delete", {
+    await axios.post("https://4f13fb3fbe6a.ngrok.io/api/delete", {
       Key: data.me.avatarKey,
     });
     await editPhotoMutation({
