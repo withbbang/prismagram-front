@@ -4,7 +4,7 @@ import { defaults, resolvers } from "./LocalState";
 export default new ApolloClient({
   uri: "https://e634c8ea4e42.ngrok.io",
   // process.env.NODE_ENV === "development"
-  //   ? "https://e634c8ea4e42.ngrok.io"
+  //   ? "http://localhost:4000"
   //   : "https://youngstagram-backend.herokuapp.com/",
   clientState: {
     defaults,
